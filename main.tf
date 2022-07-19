@@ -9,6 +9,6 @@ terraform {
 
 provider "akash" {}
 
-resource "akash_deployment" "my_deployment" {
+resource "akash_deployment" "hello_world" {
   sdl = file("${path.module}/sdl.yaml")
 }
