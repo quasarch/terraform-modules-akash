@@ -17,6 +17,6 @@ resource "akash_deployment" "pkt_deployment" {
   })
 }
 
-output "deployment_id" {
-  value = akash_deployment.pkt_deployment
+output "services" {
+  value = akash_deployment.pkt_deployment.*.services
 }

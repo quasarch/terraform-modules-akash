@@ -16,3 +16,7 @@ resource "akash_deployment" "hello_world" {
 output "deployment_id" {
   value = akash_deployment.hello_world.id
 }
+
+output "services" {
+  value = akash_deployment.hello_world.services
+}
