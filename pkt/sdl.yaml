@@ -1,0 +1,38 @@
+---
+version: "2.0"
+services:
+  pkt-miner:
+    image: cryptoandcoffee/akash-pkt-miner:5
+    env:
+      - WALLET_ADDR=${wallet_addr}
+      - POOL1=http://pool.pkteer.com
+      - POOL2=http://pool.pkt.world
+      - POOL3=http://pool.pktpool.io
+      - POOL4=https://stratum.zetahash.com
+    expose:
+      - port: 3000
+        as: 80
+        to:
+          - global: true
+profiles:
+  compute:
+    pkt-miner:
+      resources:
+        cpu:
+          units: 1
+        memory:
+          size: 1Gi
+        storage:
+          size: 1Gi
+  placement:
+    pkt-miner:
+      pricing:
+        pkt-miner:
+          denom: uakt
+          amount: 10000
+
+deployment:
+  pkt-miner:
+    pkt-miner:
+      profile: pkt-miner
+      count: 1
