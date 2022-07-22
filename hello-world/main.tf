@@ -12,3 +12,11 @@ provider "akash" {}
 resource "akash_deployment" "hello_world" {
   sdl = file("${path.module}/sdl.yaml")
 }
+
+output "deployment_id" {
+  value = akash_deployment.hello_world.id
+}
+
+output "services" {
+  value = akash_deployment.hello_world.services
+}
