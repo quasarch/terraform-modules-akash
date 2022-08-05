@@ -1,13 +1,11 @@
 terraform {
   required_providers {
     akash = {
-      version = "0.3"
-      source  = "joaoluna.com/cloud/akash"
+      version = "0.0.3"
+      source  = "cloud-j-luna/akash"
     }
   }
 }
-
-provider "akash" {}
 
 resource "akash_deployment" "pkt_deployment" {
   count = var.number_instances
