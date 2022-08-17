@@ -7,14 +7,13 @@ terraform {
   }
 }
 
-resource "akash_deployment" "pkt_deployment" {
-  count = var.number_instances
-
+resource "akash_deployment" "linux" {
   sdl = templatefile("${path.module}/sdl.yaml", {
-    wallet_addr = var.wallet_addr
+    ssh_port   = var.ssh_port
+    ssh_pubkey = var.ssh_pubkey
   })
 }
 
 output "services" {
-  value = akash_deployment.pkt_deployment.*.services
+  value = akash_deployment.linux.services
 }

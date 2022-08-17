@@ -1,0 +1,40 @@
+---
+version: "2.0"
+
+services:
+  website:
+    image: user994455/ubuntu-base:0.2
+    env:
+      - sshport=${ssh_port}
+      - pubkey=${ssh_pubkey}
+    expose:
+      - port: ${ssh_port}
+        as: ${ssh_port}
+        to:
+          - global: true
+profiles:
+  compute:
+    website:
+      resources:
+        cpu:
+          units: 4.0
+        memory:
+          size: 4Gi
+        storage:
+          size: 8Gi
+  placement:
+    akash:
+      attributes:
+        host: akash
+      signedBy:
+        anyOf:
+          - "akash1365yvmc4s7awdyj3n2sav7xfx76adc6dnmlx63"
+      pricing:
+        website:
+          denom: uakt
+          amount: 100
+deployment:
+  website:
+    akash:
+      profile: website
+      count: 1

@@ -1,0 +1,1 @@
+To connect use `ssh -p <external port> root@<host>`
