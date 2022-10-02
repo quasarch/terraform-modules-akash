@@ -1,0 +1,41 @@
+---
+version: "2.0"
+
+services:
+  tvheadend:
+    image: linuxserver/tvheadend
+    expose:
+      - port: 9981
+        as: 80
+        to:
+          - global: true
+      - port: 9982
+        as: 9982
+        to:
+          - global: true
+
+profiles:
+  compute:
+    tvheadend:
+      resources:
+        cpu:
+          units: 4.0
+        memory:
+          size: 4Gi
+        storage:
+          size: 8Gi
+  placement:
+    akash:
+      signedBy:
+        anyOf:
+          - "akash1365yvmc4s7awdyj3n2sav7xfx76adc6dnmlx63"
+      pricing:
+        tvheadend:
+          denom: uakt
+          amount: 10000
+
+deployment:
+  tvheadend:
+    akash:
+      profile: tvheadend
+      count: 1

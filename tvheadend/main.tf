@@ -7,10 +7,10 @@ terraform {
   }
 }
 
-resource "akash_deployment" "hello_world" {
+resource "akash_deployment" "service" {
   sdl = file("${path.module}/sdl.yaml")
 }
 
 output "services" {
-  value = akash_deployment.hello_world.services
+  value = akash_deployment.service.services
 }
