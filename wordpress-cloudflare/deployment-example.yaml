@@ -1,0 +1,91 @@
+---
+version: "2.0"
+services:
+  db:
+    # or any other mysql image
+    image: silvagc/mysql:5.7.1
+    env:
+      - MYSQL_ROOT_PASSWORD=${my_sql_root_password}
+      - MYSQL_DATABASE=${my_sql_database}
+      - MYSQL_USER=${my_sql_user}
+      - MYSQL_PASSWORD=${my_sql_password}
+    expose:
+      - port: 3306
+        to:
+          - service: wordpress
+  wordpress:
+    # or any other wordpress image
+    image: silvagc/wordpress:${wordpress_version}
+    depends_on:
+      - db
+    volumes:
+      - "site-data:/var/www"
+    expose:
+      - port: 80
+        as: 80
+        accept:
+          - "${domain_url}"
+        http_options:
+          max_body_size: 104857600
+        to:
+          - global: true
+    env:
+      - 'url=${domain_url}'
+      - DB_HOST=db:3306
+      - DB_USER=${my_sql_user}
+      - DB_PASSWORD=${my_sql_password}
+      - DB_NAME=${my_sql_database}
+      - FS_METHOD=direct
+    params:
+      storage:
+        data:
+          mount: /var/www
+profiles:
+  compute:
+    db:
+      resources:
+        cpu:
+          units: 0.5
+        memory:
+          size: 1Gi
+        storage:
+          size: 1Gi
+    wordpress:
+      resources:
+        cpu:
+          units: 1.0
+        memory:
+          size: 1Gi
+        storage:
+          - size: 1Gi
+          - name: data
+            size: 1Gi
+            attributes:
+              persistent: true
+              class: beta3
+
+  placement:
+    akash:
+      attributes:
+        host: akash
+      signedBy:
+        anyOf:
+          - "akash1365yvmc4s7awdyj3n2sav7xfx76adc6dnmlx63"
+          - "akash18qa2a2ltfyvkyj0ggj3hkvuj6twzyumuaru9s4"
+      pricing:
+        wordpress:
+          denom: uakt
+          amount: 1000
+        db:
+          denom: uakt
+          amount: 1000
+deployment:
+  wordpress:
+    akash:
+      profile: wordpress
+      count: 1
+  db:
+    akash:
+      profile: db
+      count: 1
+
